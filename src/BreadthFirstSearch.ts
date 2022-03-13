@@ -26,10 +26,12 @@ export function provider({ target, limit, restrict }: IProviderData) {
         return result
     }
     
+    let counter = 0
     function printItem(node: Node) {
-        const value = node.getTotalValue()
-        const resource = node.getResource(limit)
-        console.log(`${value}, ${resource}`.padEnd(8, ' ') + node.getTotalCounts())
+        const count = `${counter++}:`.padEnd(5, ' ')
+        const value = `${node.getTotalValue()}`.padEnd(5, ' ')
+        const resource = `${node.getResource(limit)}`.padEnd(5, ' ')
+        console.log(`${count} ${value} ${resource}` + node.getTotalCounts())
     }
 
     function createInitBound(): Node[] {
@@ -48,17 +50,34 @@ export function provider({ target, limit, restrict }: IProviderData) {
         return result
     }
     
-    function buildTree() {
+    function buildTree(): Node {
         const queue: Node[] = createInitBound()
+        let result: Node = queue[queue.length - 1]
         let item: Node|null|undefined = null
         let boundLevel = 1
+        const map: Record<string, Node> = {}
         while (( item = queue.pop() )) {
+            const key = `${boundLevel}-${item.getResource(limit)}`
+            const possibleItem = map[key]
+            if (!possibleItem) {
+                map[key] = item
+            } else if (possibleItem.getTotalValue() > item.getTotalValue()) {
+                continue
+            }
             queue.unshift(
                 ...getBound(item, boundLevel)
             )
             printItem(item)
+            if (
+                boundLevel === target.length &&
+                result &&
+                result.getTotalValue() < item.getTotalValue()
+            ) {
+                result = item
+            }
             boundLevel = getTotalCountsLength(queue)
         }
+        return result
     }
     
     function getTotalCountsLength(nodes: Node[]): number {

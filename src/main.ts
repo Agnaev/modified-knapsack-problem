@@ -10,4 +10,9 @@ const { buildTree } = provider({
     restrict
 })
 
-console.log(buildTree())
+const resultNode = buildTree()
+console.log(
+    resultNode.getTotalCounts(),
+    resultNode.getTotalValue(),
+    resultNode.getResource(limit)
+)
