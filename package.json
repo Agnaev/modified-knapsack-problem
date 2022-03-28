@@ -4,7 +4,8 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "node -r ts-node/register/transpile-only src/main.ts"
+    "start": "node -r ts-node/register/transpile-only src/main.ts",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

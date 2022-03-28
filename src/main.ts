@@ -10,9 +10,15 @@ const { buildTree } = provider({
     restrict
 })
 
+const start = new Date
 const resultNode = buildTree()
+const end = new Date
+const processingTime = end.getTime() - start.getTime()
+
 console.log(
-    resultNode.getTotalCounts(),
+    'critical path: %s\nTarget function value: %d\nResource: %d\nProcessing time: %d',
+    resultNode.getTotalCounts().join(' '),
     resultNode.getTotalValue(),
-    resultNode.getResource(limit)
+    resultNode.getResource(limit),
+    processingTime
 )

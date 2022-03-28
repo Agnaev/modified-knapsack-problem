@@ -67,7 +67,7 @@ export function provider({ target, limit, restrict }: IProviderData) {
             queue.unshift(
                 ...getBound(item, boundLevel)
             )
-            printItem(item)
+            // printItem(item)
             if (
                 boundLevel === target.length &&
                 result &&
